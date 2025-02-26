@@ -1,13 +1,10 @@
 --[[
 作者：阳贻凡
 --]]
-local BaseClass = require("BaseClass")
-local ModelBase = require("ModelBase")
-local CharacterType = require("CharacterType")
-local CharacterQuality = require("CharacterQuality")
+local Dependence = require("Dependence")
 
 --角色背包数据模型
-local CharacterBagModel = BaseClass("CharacterModel", ModelBase)
+local CharacterBagModel = Dependence.BaseClass("CharacterModel", Dependence.ModelBase)
 CharacterBagModel.Name = "CharacterBagModel"
 
 function CharacterBagModel:__init()
@@ -20,7 +17,7 @@ function CharacterBagModel:__init()
     --角色字典
     self.characterDic = {}
     --当前背包的角色类型
-    self.characterType = CharacterType.All
+    self.characterType = Dependence.CharacterType.All
     --角色阵容，5位角色
     self.teamList = {}
 
@@ -50,7 +47,7 @@ function CharacterBagModel:GetList(characterType)
 
     for i = 1,#self.characterList do
         local character = self.characterList[i]
-        if characterType == CharacterType.All
+        if characterType == Dependence.CharacterType.All
             or character.type == characterType then
             table.insert(list, character)
         end

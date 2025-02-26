@@ -11,6 +11,7 @@ namespace Demo
     /// <summary>
     /// 角色列表
     /// </summary>
+    [XLua.LuaCallCSharp]
     public class CharacterViewList : ViewList<CharacterInfo>
     {
         /// <summary>

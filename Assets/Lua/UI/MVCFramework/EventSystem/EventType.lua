@@ -16,7 +16,17 @@ local EventType = {
         --背包角色类型更新
         UPDATE_CHARACTER_TYPE = "UPDATE_CHARACTER_TYPE",
         --高亮事件
-        HIGHLIGHT = "HIGHLIGHT"
+        HIGHLIGHT = "HIGHLIGHT",
+        --点击角色格事件(int 角色id)
+        CLICK_CHARACTER = "CLICK_CHARACTER",
+        --点击阵容格事件(int 角色id)
+        CLICK_TEAM = "CLICK_TEAM",
+        --背包格子刷新事件（cellID,characterID）
+        REFRESH_GRID = "REFRESH_GRID",
+        --点击上阵按钮事件
+        CLICK_UP_TEAM = "CLICK_UP_TEAM",
+        --点击侠客选项(isOn)
+        CLICK_CHARACTER_OPTION = "CLICK_CHARACTER_OPTION"
     }
 }
 

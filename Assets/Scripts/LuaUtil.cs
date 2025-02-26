@@ -11,6 +11,7 @@ namespace Demo
     /// <summary>
     /// lua工具类
     /// </summary>
+    [XLua.LuaCallCSharp]
     public static class LuaUtil
     {
         // 设置位置

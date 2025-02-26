@@ -1,14 +1,10 @@
 --[[
 作者：阳贻凡
 --]]
-local BaseClass = require("BaseClass")
-local ViewBase = require("ViewBase")
-local LuaUtil = CS.Demo.LuaUtil
-local EventSystem = require("EventSystem")
-local EventType= require("EventType")
+local Dependence = require("Dependence")
 local TeamCharacterCell = require("TeamCharacterCell")
 --阵容视图
-local TeamView = BaseClass("TeamView", ViewBase)
+local TeamView = Dependence.BaseClass("TeamView", Dependence.ViewBase)
 TeamView.Name = "TeamView"
 
 
@@ -21,6 +17,23 @@ function TeamView:InitComponents()
     self.cells[4] = TeamCharacterCell.New(self.transform:Find("TeamCell4"))
     self.cells[5] = TeamCharacterCell.New(self.transform:Find("TeamCell5"))
 
+end
+
+function TeamView:AddListener()
+    --阵容角色格子
+    for i = 1 ,#self.cells do
+        self.cells[i].teamBtn.onClick:AddListener(
+            function()
+                Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.CLICK_TEAM
+                    ,self.cells[i].cId)
+            end)
+    end
+end
+
+function TeamView:RemoveListener()
+    for i = 1 ,#self.cells do
+        self.cells[i].teamBtn.onClick:RemoveAllListeners()
+    end
 end
 
 --设置上阵

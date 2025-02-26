@@ -2,4 +2,10 @@
 
 <linker>
 
+	<assembly fullname="Assembly-CSharp">
+	    <type fullname="Demo.CharacterViewList" preserve="all"/>
+		<type fullname="Demo.LuaUtil" preserve="all"/>
+		
+	</assembly>
+
 </linker>

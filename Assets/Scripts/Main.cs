@@ -21,7 +21,9 @@ namespace Demo
         private void Start()
         {
             LuaMgr.Instance.DOLuaFile("Main");
+           
         }
     }
+
 }
 

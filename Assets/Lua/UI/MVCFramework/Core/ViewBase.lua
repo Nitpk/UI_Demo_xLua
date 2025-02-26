@@ -14,6 +14,7 @@ function ViewBase:__init(prefabPath,parentTrans)
     self.transform = self.gameObject.transform
     self.transform:SetParent(parentTrans,false)
     self:InitComponents()
+    self:AddListener()
 end
 --显示
 function ViewBase:Show()
@@ -31,8 +32,13 @@ end
 function ViewBase:OnHide() end
 --初始化组件
 function ViewBase:InitComponents() end
+--添加监听
+function ViewBase:AddListener() end
+--移除监听
+function ViewBase:RemoveListener() end
 --销毁时调用
 function ViewBase:OnDestroy()
+    self:RemoveListener()
     GameObject.Destroy(self.gameObject)
 end
 
