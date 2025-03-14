@@ -2,9 +2,8 @@
 作者：阳贻凡
 --]]
 
-local Dependence = require("Dependence")
 --阵容角色格子
-local TeamCharacterCell = Dependence.BaseClass("TeamCharacterCell",Dependence.Object)
+local TeamCharacterCell = BaseClass("TeamCharacterCell",Object)
 
 --头像图片路径
 TeamCharacterCell.path = "ArtRes/"
@@ -21,11 +20,11 @@ end
 
 function TeamCharacterCell:InitComponents(transform)
     --基础组件
-    self.teamBtn = Dependence.LuaUtil.GetButton(transform)
+    self.teamBtn = LuaUtil.GetButton(transform)
     
     --文本组件
-    self.qualityText = Dependence.LuaUtil.GetText(transform,"QualityText")
-    self.levelText = Dependence.LuaUtil.GetText(transform,"LevelText")
+    self.qualityText = LuaUtil.GetText(transform,"QualityText")
+    self.levelText = LuaUtil.GetText(transform,"LevelText")
 
     --星级组处理
     self.starGroup = {}
@@ -38,13 +37,13 @@ function TeamCharacterCell:InitComponents(transform)
         "StarImage (4)"
     } 
     for i=1,5 do
-        self.starGroup[i] = Dependence.LuaUtil.GetImage(groupTrans,starPaths[i])
+        self.starGroup[i] = LuaUtil.GetImage(groupTrans,starPaths[i])
     end
 
     --头像组件
-    self.headImage = Dependence.LuaUtil.GetImage(transform,"HeadImage")
+    self.headImage = LuaUtil.GetImage(transform,"HeadImage")
     --高亮组件
-    self.highlight = Dependence.LuaUtil.GetImage(transform)
+    self.highlight = LuaUtil.GetImage(transform)
     --当前角色id
     self.cId = -1
 end
@@ -56,18 +55,24 @@ function TeamCharacterCell:UpdateCell(cInfo)
     end
 
     self.cId = cInfo.id
-    self.headImage.sprite = Resources.Load(TeamCharacterCell.path..cInfo.headPath,typeof(Sprite))
+    --加载图片
+    StartCoroutine(LoadMgr.LoadAsync,TeamCharacterCell.path..cInfo.headPath,typeof(Sprite),
+    function(asset)
+        self.headImage.sprite = asset
+    end
+    )
+    
     self:SetStar(cInfo.quality)
 
-    Dependence.ViewBase.strBuilder:Clear()
-    Dependence.ViewBase.strBuilder:Append(TeamCharacterCell.LevelStr)
-    Dependence.ViewBase.strBuilder:Append(tostring(cInfo.level))
-    self.levelText.text = Dependence.ViewBase.strBuilder:ToString()
+    ViewBase.strBuilder:Clear()
+    ViewBase.strBuilder:Append(TeamCharacterCell.LevelStr)
+    ViewBase.strBuilder:Append(tostring(cInfo.level))
+    self.levelText.text = ViewBase.strBuilder:ToString()
     
 end
 --设置品质星级
 function TeamCharacterCell:SetStar(quality)
-    self.qualityText.text = Dependence.CharacterQualityStr[quality]
+    self.qualityText.text = CharacterQualityStr[quality]
 
     --设置星级
     for i = 1,5 do

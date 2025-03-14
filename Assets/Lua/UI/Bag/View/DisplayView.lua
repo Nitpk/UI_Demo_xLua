@@ -2,9 +2,9 @@
 作者：阳贻凡
 --]]
 
-local Dependence = require("Dependence")
+
 --角色展示视图
-local DisplayView = Dependence.BaseClass("DisplayView", Dependence.ViewBase)
+local DisplayView = BaseClass("DisplayView", ViewBase)
 DisplayView.Name = "DisplayView"
 
 --字符串常量
@@ -15,38 +15,42 @@ DisplayView.TeamStr = "上阵"
 
 function DisplayView:InitComponents()
     --文本组件初始化 
-    self.qualityText = Dependence.LuaUtil.GetText(self.transform,"QualityText")
-    self.typeText = Dependence.LuaUtil.GetText(self.transform,"TypeText")
-    self.levelText = Dependence.LuaUtil.GetText(self.transform,"LevelText")
-    self.nameText = Dependence.LuaUtil.GetText(self.transform,"NameText")
+    self.qualityText = LuaUtil.GetText(self.transform,"QualityText")
+    self.typeText = LuaUtil.GetText(self.transform,"TypeText")
+    self.levelText = LuaUtil.GetText(self.transform,"LevelText")
+    self.nameText = LuaUtil.GetText(self.transform,"NameText")
 
     -- 星级组初始化
     local groupTrans = self.transform:Find("StarGroup")
     self.starGroup = {
-        [1]=Dependence.LuaUtil.GetImage(groupTrans,"StarImage (4)"),
-        [2]=Dependence.LuaUtil.GetImage(groupTrans,"StarImage (3)"),
-        [3]=Dependence.LuaUtil.GetImage(groupTrans,"StarImage (2)"),
-        [4]=Dependence.LuaUtil.GetImage(groupTrans,"StarImage (1)"),
-        [5]=Dependence.LuaUtil.GetImage(groupTrans,"StarImage"),
+        [1]=LuaUtil.GetImage(groupTrans,"StarImage (4)"),
+        [2]=LuaUtil.GetImage(groupTrans,"StarImage (3)"),
+        [3]=LuaUtil.GetImage(groupTrans,"StarImage (2)"),
+        [4]=LuaUtil.GetImage(groupTrans,"StarImage (1)"),
+        [5]=LuaUtil.GetImage(groupTrans,"StarImage"),
     }
 
     -- 按钮组件初始化
-    self.teamBtn = Dependence.LuaUtil.GetButton(self.transform,"TeamBtn")
-    self.teamText = Dependence.LuaUtil.GetText(self.teamBtn.transform,"Text (Legacy)")
+    self.teamBtn = LuaUtil.GetButton(self.transform,"TeamBtn")
+    self.teamText = LuaUtil.GetText(self.teamBtn.transform,"Text (Legacy)")
     
     --角色模型（临时）
     self.characterLoaded = nil
-
+    
     --角色模型坐标
-    self.pos ={}
-    self.pos.x ,self.pos.y = Dependence.LuaUtil.GetUIZeroWorldPosition(self.transform)
+    self.pos = {}
+    self.pos.x ,self.pos.y = LuaUtil.GetUIZeroWorldPosition(self.transform)
+end
+
+function DisplayView:OnShow()
+    self.pos.x ,self.pos.y = LuaUtil.GetUIZeroWorldPosition(self.transform)
 end
 
 function DisplayView:AddListener()
     --上阵按钮
     self.teamBtn.onClick:AddListener(
         function()
-            Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.CLICK_UP_TEAM)
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.CLICK_UP_TEAM)
         end)
 end
 
@@ -71,10 +75,17 @@ end
 function DisplayView:UpdateCharacter(character)
     --加载角色模型
     if self.characterLoaded == nil then
-        self.characterLoaded = GameObject.Instantiate(Resources.Load("Character",typeof(GameObject)),
-                                                        self.transform)   
+        StartCoroutine(LoadMgr.LoadAsync,"Character",typeof(GameObject),
+        function(asset)
+            self.characterLoaded = GameObject.Instantiate(asset,self.transform)
+            LuaUtil.SetPosition(self.characterLoaded,self.pos.x,self.pos.y)
+        end
+        )
+    else
+        LuaUtil.SetPosition(self.characterLoaded,self.pos.x,self.pos.y)
     end
-    Dependence.LuaUtil.SetPosition(self.characterLoaded,self.pos.x,self.pos.y)
+    
+    
 
     --更新文本信息
     self.nameText.text = character.name
@@ -97,7 +108,7 @@ end
 --设置品质星级
 function DisplayView:SetStar(quality)
     --设置品质
-    self.qualityText.text = Dependence.CharacterQualityStr[quality];
+    self.qualityText.text = CharacterQualityStr[quality];
 
     --设置星级
     for i = 1,5 do

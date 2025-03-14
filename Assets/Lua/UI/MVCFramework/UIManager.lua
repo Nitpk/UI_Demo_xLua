@@ -1,19 +1,17 @@
 --[[
 作者：阳贻凡
 --]]
-local BaseClass = require("BaseClass")
-local UIConfig = require("UIConfig")
 
 --UI管理器
 local UIManager = BaseClass("UIManager",Object)
-UIManager.instances = nil
+UIManager.instance = nil
 
 --得到单例
-function UIManager.GetInstances()
-    if UIManager.instances == nil then
-        UIManager.instances = UIManager.New()
+function UIManager.GetInstance()
+    if UIManager.instance == nil then
+        UIManager.instance = UIManager.New()
     end
-    return UIManager.instances
+    return UIManager.instance
 end
 function UIManager:__init()
     --ui字典
@@ -25,22 +23,32 @@ function UIManager:__init()
     self.canvasTrans = nil
     --ui相机
     self.camera = nil
-    self:InitFramework()
-    self:InitUI()
 end
 --UI框架初始化
-function UIManager:InitFramework()
+function UIManager:InitFramework(callBack)
     --实例化框架预制体
-    local frameObj = GameObject.Instantiate(Resources.Load("UIFrame",typeof(GameObject)))
-    self.canvas = frameObj:GetComponentInChildren(typeof(Canvas))
-    self.layerTrans = self.canvas.transform:Find("Layer")
-    self.camera = frameObj:GetComponentInChildren(typeof(Camera))
+    StartCoroutine(LoadMgr.LoadAsync,"UIFrame",typeof(GameObject),
+        function(asset)
+            local frameObj = GameObject.Instantiate(asset)
+            self.canvas = frameObj:GetComponentInChildren(typeof(Canvas))
+            self.layerTrans = self.canvas.transform:Find("Layer")
+            self.camera = frameObj:GetComponentInChildren(typeof(Camera))
+            --加载UI
+            StartCoroutine(self.InitUI,self,callBack)
+        end
+    )
 end
 
 --根据UI配置表初始化
-function UIManager:InitUI()
+function UIManager:InitUI(callBack)
+
     for k,v in pairs(UIConfig) do
-        self:RegisterUI(k, v)
+        --依次等待加载
+        coroutine.yield(StartCoroutine(self.RegisterUI,self,k, v))
+    end
+
+    if callBack ~= nil then
+        callBack()
     end
 end
 
@@ -49,7 +57,14 @@ function UIManager:RegisterUI(uiName, config )
     local uiObj = {}
     -------------
     --view
-    uiObj.view = config.viewClass.New(config.prefabPath, self.layerTrans)
+    local prefabGO = nil
+    --等待资源加载完成后再执行后续步骤
+    coroutine.yield(StartCoroutine(LoadMgr.LoadAsync,config.prefabPath,typeof(GameObject),
+    function(asset)
+            prefabGO = GameObject.Instantiate(asset)
+        end
+    ))
+    uiObj.view = config.viewClass.New(prefabGO, self.layerTrans)
     ------------
     --model
     if self.modelDic[config.modelClass.Name] == nil then
@@ -70,6 +85,7 @@ function UIManager:RegisterUI(uiName, config )
     uiObj.view:Hide()
 
     self.uiDic[uiName] = uiObj
+    
 end
 
 --显示UI
@@ -92,7 +108,7 @@ function UIManager:DestroyUI(uiName)
     if not uiObj then return end
 
     --view
-    uiObj.view:OnDestroy() 
+    uiObj.view:OnDestroy()
 
     --model
     self.modelDic[uiObj.model.Name].cnt = self.modelDic[uiObj.model.Name].cnt - 1

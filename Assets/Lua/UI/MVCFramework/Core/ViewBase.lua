@@ -1,17 +1,17 @@
 --[[
 作者：阳贻凡
 --]]
-local BaseClass = require("BaseClass")
+
 --视图基类
 local ViewBase = BaseClass("ViewBase", Object)
 --为UI的字符串拼接节省开销，所有视图共用一个
 ViewBase.strBuilder = CS.System.Text.StringBuilder(20)
 
 ViewBase.Name = "ViewBase"
-function ViewBase:__init(prefabPath,parentTrans)
-    --暂时先用Resources同步加载
-    self.gameObject = GameObject.Instantiate(Resources.Load(prefabPath,typeof(GameObject)))
-    self.transform = self.gameObject.transform
+function ViewBase:__init(gameObject,parentTrans)
+    
+    self.gameObject = gameObject--GameObject.Instantiate(Resources.Load(prefabPath,typeof(GameObject)))
+    self.transform = gameObject.transform
     self.transform:SetParent(parentTrans,false)
     self:InitComponents()
     self:AddListener()

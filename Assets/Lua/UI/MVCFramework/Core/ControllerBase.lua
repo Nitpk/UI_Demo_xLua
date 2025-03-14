@@ -1,7 +1,7 @@
 --[[
 作者：阳贻凡
 --]]
-local BaseClass = require("BaseClass")
+
 --控制器基类
 local ControllerBase = BaseClass("ControllerBase", Object)
 ControllerBase.Name = "ControllerBase"

@@ -1,7 +1,7 @@
 --[[
 作者：阳贻凡
 --]]
-local BaseClass = require("BaseClass")
+
 --事件系统
 local EventSystem = BaseClass("EventSystem", Object)
 EventSystem.instance = nil

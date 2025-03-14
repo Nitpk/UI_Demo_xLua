@@ -2,9 +2,14 @@
 作者：阳贻凡
 --]]
 --lua主入口
-require("Needs")
+require("Dependence")
 
-local UINames = require("UINames")
-local UIManager = require("UIManager")
 
-UIManager.GetInstances():ShowUI(UINames.CharacterBagMenu)
+UIManager.GetInstance():InitFramework(
+    function()
+        UIManager.GetInstance():ShowUI(UINames.CharacterBagMenu)
+    end
+)
+
+
+

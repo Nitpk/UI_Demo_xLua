@@ -2,20 +2,79 @@
 作者：阳贻凡
 --]]
 
---依赖库
-local Dependence = 
-{
-    BaseClass = require("BaseClass"),
-    ControllerBase = require("ControllerBase"),
-    ModelBase = require("ModelBase"),
-    ViewBase = require("ViewBase"),
-    EventSystem = require("EventSystem"),
-    EventType= require("EventType"),
-    CharacterType = require("CharacterType"),
-    CharacterQuality = require("CharacterQuality"),
-    CharacterQualityStr = require("CharacterQualityStr"),
-    LuaUtil = CS.Demo.LuaUtil
+
+local config = {
+    --Lua内的类
+    LuaDic = {
+        BaseClass = "BaseClass",
+        ControllerBase = "ControllerBase",
+        ModelBase = "ModelBase",
+        ViewBase = "ViewBase",
+        EventSystem = "EventSystem",
+        EventType= "EventType",
+        CharacterType = "CharacterType",
+        CharacterQuality = "CharacterQuality",
+        CharacterQualityStr = "CharacterQualityStr",
+        UIConfig = "UIConfig",
+        UINames = "UINames",
+        UIManager = "UIManager",
+        TeamCharacterCell = "TeamCharacterCell",
+        CharacterCell = "CharacterCell",
+        util = "xlua.util",
+        LoadMgr = "LoadMgr"
+    },
+    --C#的类
+    CSharpDic = {
+        LuaUtil = CS.Demo.LuaUtil,
+        --Unity
+        --常用命名空间别名
+        GameObject = CS.UnityEngine.GameObject,
+        Transform = CS.UnityEngine.Transform,
+        Vector3 = CS.UnityEngine.Vector3,
+        Color = CS.UnityEngine.Color,
+        Screen = CS.UnityEngine.Screen,
+        Camera = CS.UnityEngine.Camera,
+        Resources = CS.UnityEngine.Resources,
+
+        -- UI相关
+        RectTransform = CS.UnityEngine.RectTransform,
+        Canvas = CS.UnityEngine.Canvas,
+        Image = CS.UnityEngine.UI.Image,
+        Text = CS.UnityEngine.UI.Text,
+        Button = CS.UnityEngine.UI.Button,
+        ScrollRect = CS.UnityEngine.UI.ScrollRect,
+        Toggle = CS.UnityEngine.UI.Toggle,
+        Sprite = CS.UnityEngine.Sprite,
+
+        Events = CS.UnityEngine.Events
+    }
     
 }
 
-return Dependence
+--为G表设置元表
+local mt = 
+{
+    
+    __index = function(table,key)
+        assert(type(key)=="string" and #key > 0)
+
+        if config.CSharpDic[key] then
+            return config.CSharpDic[key]
+        elseif config.LuaDic[key] then
+            local module = require(config.LuaDic[key])
+            table[key] = module
+            return module
+        else
+            return nil
+        end
+    end
+}
+
+setmetatable(_G,mt)
+
+--C#的Main类
+Main = GameObject.Find("Main"):GetComponent(typeof(CS.Demo.Main)) 
+--执行协程的方法
+function StartCoroutine(func,...)
+    return Main:StartCoroutine(util.cs_generator(func,...))
+end

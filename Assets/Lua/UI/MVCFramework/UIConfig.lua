@@ -2,8 +2,6 @@
 作者：阳贻凡
 --]]
 
-local UINames = require("UINames")
-
 --UI配置表
 local UIConfig = {
     [UINames.CharacterBagMenu] = {

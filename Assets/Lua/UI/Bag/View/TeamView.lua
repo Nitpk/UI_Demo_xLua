@@ -1,10 +1,10 @@
 --[[
 作者：阳贻凡
 --]]
-local Dependence = require("Dependence")
-local TeamCharacterCell = require("TeamCharacterCell")
+
+
 --阵容视图
-local TeamView = Dependence.BaseClass("TeamView", Dependence.ViewBase)
+local TeamView = BaseClass("TeamView", ViewBase)
 TeamView.Name = "TeamView"
 
 
@@ -24,7 +24,7 @@ function TeamView:AddListener()
     for i = 1 ,#self.cells do
         self.cells[i].teamBtn.onClick:AddListener(
             function()
-                Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.CLICK_TEAM
+                EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.CLICK_TEAM
                     ,self.cells[i].cId)
             end)
     end

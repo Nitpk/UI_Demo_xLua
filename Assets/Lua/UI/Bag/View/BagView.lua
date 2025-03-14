@@ -2,10 +2,9 @@
 作者：阳贻凡
 --]]
 
-local Dependence = require("Dependence")
-local CharacterCell = require("CharacterCell")
+
 --角色背包视图
-local BagView = Dependence.BaseClass("BagView", Dependence.ViewBase)
+local BagView = BaseClass("BagView", ViewBase)
 BagView.Name = "BagView"
 
 BagView.strBagNum = "/"
@@ -13,8 +12,8 @@ BagView.strBagNum = "/"
 function BagView:InitComponents()
     --顶部区域组件
     local topTrans = self.transform:Find("Top")
-    self.addBagNumBtn = Dependence.LuaUtil.GetButton(topTrans, "AddBtn")
-    self.bagNumText = Dependence.LuaUtil.GetText(topTrans, "NumText")
+    self.addBagNumBtn = LuaUtil.GetButton(topTrans, "AddBtn")
+    self.bagNumText = LuaUtil.GetText(topTrans, "NumText")
 
     --角色列表组件
     self.characterViewList = self.transform:Find("Scroll View"):GetComponent(typeof(CS.Demo.CharacterViewList)) 
@@ -27,12 +26,12 @@ function BagView:InitComponents()
     local togGroup = self.transform:Find("ToggleGroup")
     
     --按顺序添加Toggle
-    table.insert(self.typeToggles, Dependence.LuaUtil.GetToggle(togGroup, "AllToggle"))
-    table.insert(self.typeToggles, Dependence.LuaUtil.GetToggle(togGroup, "Type1Toggle"))
-    table.insert(self.typeToggles, Dependence.LuaUtil.GetToggle(togGroup, "Type2Toggle"))
-    table.insert(self.typeToggles, Dependence.LuaUtil.GetToggle(togGroup, "Type3Toggle"))
-    table.insert(self.typeToggles, Dependence.LuaUtil.GetToggle(togGroup, "Type4Toggle"))
-    table.insert(self.typeToggles, Dependence.LuaUtil.GetToggle(togGroup, "Type5Toggle"))
+    table.insert(self.typeToggles, LuaUtil.GetToggle(togGroup, "AllToggle"))
+    table.insert(self.typeToggles, LuaUtil.GetToggle(togGroup, "Type1Toggle"))
+    table.insert(self.typeToggles, LuaUtil.GetToggle(togGroup, "Type2Toggle"))
+    table.insert(self.typeToggles, LuaUtil.GetToggle(togGroup, "Type3Toggle"))
+    table.insert(self.typeToggles, LuaUtil.GetToggle(togGroup, "Type4Toggle"))
+    table.insert(self.typeToggles, LuaUtil.GetToggle(togGroup, "Type5Toggle"))
 
 end
 
@@ -40,7 +39,7 @@ function BagView:AddListener()
     --背包容量增加
     self.addBagNumBtn.onClick:AddListener(
         function()
-            Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.UPDATE_BAG_CAPACITY)
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_BAG_CAPACITY)
         end)
     --角色类型切换
     for i=1,6 do
@@ -48,7 +47,7 @@ function BagView:AddListener()
             function(inOn)
                 for i=1,#self.typeToggles do
                     if self.typeToggles[i].isOn then
-                        Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, i-1)
+                        EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, i-1)
                         break
                     end
                 end
@@ -62,7 +61,7 @@ function BagView:AddListener()
             self.cellDic[id] = cell
             cell.characterBtn.onClick:AddListener(
                 function()
-                    Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.CLICK_CHARACTER,cell.cId)
+                    EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.CLICK_CHARACTER,cell.cId)
                 end)
             return id
         end
@@ -70,7 +69,7 @@ function BagView:AddListener()
     --设置背包格子更新操作
     self.characterViewList:SetDataCallBack(
         function (cellID,characterID)
-            Dependence.EventSystem.GetInstance():Trigger(Dependence.EventType.CHARACTER_BAG.REFRESH_GRID,cellID,characterID)
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.REFRESH_GRID,cellID,characterID)
         end
     )
 end

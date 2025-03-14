@@ -1,7 +1,7 @@
 --[[
 作者：阳贻凡
 --]]
-local CharacterQuality = require("CharacterQuality")
+
 --角色品质
 local CharacterQualityStr =
 {

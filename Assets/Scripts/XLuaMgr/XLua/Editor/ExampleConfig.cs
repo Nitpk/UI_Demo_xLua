@@ -30,7 +30,8 @@ public static class ExampleConfig
     {
         typeof(UnityAction<bool>),
         typeof(UnityAction<int,int>),
-        typeof(Func<GameObject,int>)
+        typeof(Func<GameObject,int>),
+        typeof(System.Collections.IEnumerator)
 
     };
 
