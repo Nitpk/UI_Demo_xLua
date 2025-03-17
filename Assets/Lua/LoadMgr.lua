@@ -11,13 +11,13 @@
 local LoadMgr = BaseClass("LoadMgr",Object)
 
 --等待时间
-LoadMgr.wait = CS.UnityEngine.WaitForSeconds(2)
+LoadMgr.wait = CS.UnityEngine.WaitForSeconds(0.5)
 
 --模拟异步加载
 function LoadMgr.LoadAsync(assetPath,assetType,callBack)
     assert(type(assetPath)=="string" and #assetPath > 0 and assetType ~= nil)
 
-    print(assetPath.."加载中,模拟假设需2秒")
+    print(assetPath.."加载中,模拟假设需0.5秒")
     local asset = Resources.Load(assetPath,assetType)
 
     coroutine.yield(LoadMgr.wait)

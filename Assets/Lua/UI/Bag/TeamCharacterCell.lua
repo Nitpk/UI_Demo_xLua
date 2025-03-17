@@ -56,6 +56,7 @@ function TeamCharacterCell:UpdateCell(cInfo)
 
     self.cId = cInfo.id
     --加载图片
+    self.headImage.sprite = nil
     StartCoroutine(LoadMgr.LoadAsync,TeamCharacterCell.path..cInfo.headPath,typeof(Sprite),
     function(asset)
         self.headImage.sprite = asset

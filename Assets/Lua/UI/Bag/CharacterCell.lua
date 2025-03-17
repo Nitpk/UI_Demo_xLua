@@ -50,6 +50,8 @@ function CharacterCell:InitComponents(transform)
     self.highlight = LuaUtil.GetImage(transform)
     --当前角色id
     self.cId = -1
+    --当前加载的角色图片信息
+    self.imagePath = nil
 
 end
 
@@ -61,11 +63,15 @@ function CharacterCell:UpdateCell(cInfo,highlightId)
     end
 
     --加载图片
-    StartCoroutine(LoadMgr.LoadAsync,CharacterCell.path..cInfo.imagePath,typeof(Sprite),
-    function(asset)
-        self.characterImage.sprite = asset
+    if self.imagePath == nil or self.imagePath ~= cInfo.imagePath then
+        self.imagePath = cInfo.imagePath
+        self.characterImage.sprite = nil
+        StartCoroutine(LoadMgr.LoadAsync,CharacterCell.path..cInfo.imagePath,typeof(Sprite),
+        function(asset)
+            self.characterImage.sprite = asset
+        end
+        )
     end
-    )
     
     self:SetStar(cInfo.quality)
     --更新角色等级
