@@ -66,11 +66,10 @@ function CharacterCell:UpdateCell(cInfo,highlightId)
     if self.imagePath == nil or self.imagePath ~= cInfo.imagePath then
         self.imagePath = cInfo.imagePath
         self.characterImage.sprite = nil
-        StartCoroutine(LoadMgr.LoadAsync,CharacterCell.path..cInfo.imagePath,typeof(Sprite),
-        function(asset)
-            self.characterImage.sprite = asset
-        end
-        )
+        LoadMgr.Instance:LoadAsync(CharacterCell.path..cInfo.imagePath,typeof(Sprite),
+            function(asset)
+                self.characterImage.sprite = asset
+            end)
     end
     
     self:SetStar(cInfo.quality)

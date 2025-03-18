@@ -7,7 +7,7 @@ require("Dependence")
 
 UIManager.GetInstance():InitFramework(
     function()
-        UIManager.GetInstance():ShowUI(UINames.CharacterBagMenu)
+        UIManager.GetInstance():ShowUI(UINames.CharacterMenu)
     end
 )
 

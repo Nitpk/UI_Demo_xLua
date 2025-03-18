@@ -21,21 +21,22 @@ function MenuView:InitComponents()
 end
 
 function MenuView:AddListener()
-    --侠客选项
+    --点击侠客选项，
     self.characterTog.onValueChanged:AddListener(
         function (isOn)
             EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.CLICK_CHARACTER_OPTION, isOn)
         end)
 end
-
 function MenuView:RemoveListener()
     self.characterTog.onValueChanged:RemoveAllListeners()
 end
-
-function MenuView:OnShow()
-    --显示时
+--高亮侠客选项
+function MenuView:HighlightCharacter()
     self.characterTog.isOn = true
-    EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.SHOW_CHARACTER)
+end
+--高亮图鉴选项
+function MenuView:HighlightBook()
+    self.bookTog.isOn = true
 end
 
 return MenuView

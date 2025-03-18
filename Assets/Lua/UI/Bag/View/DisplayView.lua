@@ -43,7 +43,19 @@ function DisplayView:InitComponents()
 end
 
 function DisplayView:OnShow()
+    --显示时，重新计算坐标
     self.pos.x ,self.pos.y = LuaUtil.GetUIZeroWorldPosition(self.transform)
+    --显示模型
+    if self.characterLoaded ~= nil then
+        self.characterLoaded:SetActive(true)
+    end
+end
+
+function DisplayView:OnHide()
+    --隐藏模型
+    if self.characterLoaded ~= nil then
+        self.characterLoaded:SetActive(false)
+    end
 end
 
 function DisplayView:AddListener()
@@ -58,33 +70,18 @@ function DisplayView:RemoveListener()
     self.teamBtn.onClick:RemoveAllListeners()
 end
 
-
-function DisplayView:OnShow()
-    if self.characterLoaded ~= nil then
-        self.characterLoaded:SetActive(true)
-    end
-end
-
-function DisplayView:OnHide()
-    if self.characterLoaded ~= nil then
-        self.characterLoaded:SetActive(false)
-    end
-end
-
 --更新角色UI
 function DisplayView:UpdateCharacter(character)
     --加载角色模型
     if self.characterLoaded == nil then
-        StartCoroutine(LoadMgr.LoadAsync,"Character",typeof(GameObject),
-        function(asset)
-            self.characterLoaded = GameObject.Instantiate(asset,self.transform)
-            LuaUtil.SetPosition(self.characterLoaded,self.pos.x,self.pos.y)
-        end
-        )
+        LoadMgr.Instance:LoadAsync("Character",typeof(GameObject),
+            function(asset)
+                self.characterLoaded = GameObject.Instantiate(asset,self.transform)
+                LuaUtil.SetPosition(self.characterLoaded,self.pos.x,self.pos.y)
+            end)
     else
         LuaUtil.SetPosition(self.characterLoaded,self.pos.x,self.pos.y)
     end
-    
     
 
     --更新文本信息

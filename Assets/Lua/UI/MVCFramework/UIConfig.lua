@@ -4,29 +4,21 @@
 
 --UI配置表
 local UIConfig = {
-    [UINames.CharacterBagMenu] = {
-        prefabPath = "UI/CharacterMenuPanel",
-        modelClass = require("CharacterBagModel"),
-        viewClass = require("MenuView"),
+    [UINames.CharacterMenu] = {
+        viewList = {
+            MenuView = "UI/CharacterMenuPanel"
+        },
+        modelClass = nil,
         controllerClass = require("MenuController")
     },
-    [UINames.CharacterBagList] = {
-        prefabPath = "UI/CharacterBagPanel",
+    [UINames.CharacterPanel] = {
+        viewList = {
+            BagView = "UI/CharacterBagPanel",
+            DisplayView = "UI/CharacterDisplayPanel",
+            TeamView = "UI/TeamPanel"
+        },
         modelClass = require("CharacterBagModel"),
-        viewClass = require("BagView"),
-        controllerClass = require("BagController")
-    },
-    [UINames.CharacterDisplay] = {
-        prefabPath = "UI/CharacterDisplayPanel",
-        modelClass = require("CharacterBagModel"),
-        viewClass = require("DisplayView"),
-        controllerClass = require("DisplayController")
-    },
-    [UINames.TeamPanel] = {
-        prefabPath = "UI/TeamPanel",
-        modelClass = require("CharacterBagModel"),
-        viewClass = require("TeamView"),
-        controllerClass = require("TeamController")
+        controllerClass = require("CharacterBagController")
     }
 }
 

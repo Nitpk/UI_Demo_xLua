@@ -3,7 +3,7 @@
 --]]
 
 
---菜单控制器
+--菜单controller
 local MenuController =  BaseClass("MenuController",  ControllerBase)
 MenuController.Name = "MenuController"
 
@@ -11,20 +11,24 @@ function MenuController:RegisterEvents()
      EventSystem.GetInstance():Register( EventType.CHARACTER_BAG.CLICK_CHARACTER_OPTION,
         MenuController.ClickCharacter,self)
 end
---点击侠客选项
-function MenuController:ClickCharacter(isOn)
-    if isOn then
-        self.model.currentHighLightId = self.model.characterList[1].id
-        self.model.pastHighLightId = self.model.currentHighLightId
-        EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.SHOW_CHARACTER)
-    else
-        EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.HIDE_CHARACTER)
-    end
-end
-
 function MenuController:UnRegisterEvents()
     EventSystem.GetInstance():Remove(EventType.CHARACTER_BAG.CLICK_CHARACTER_OPTION,
         MenuController.ClickCharacter)
+end
+--点击侠客选项事件处理
+function MenuController:ClickCharacter(isOn)
+    if isOn then
+        UIManager.GetInstance():ShowUI(UINames.CharacterPanel)
+    else
+        UIManager.GetInstance():HideUI(UINames.CharacterPanel)
+    end
+end
+
+function MenuController:OnShow()
+    --显示时，默认显示侠客背包界面
+    self.viewDic[ViewNames.MenuView]:HighlightCharacter()
+    --直接通过UIManager显示
+    UIManager.GetInstance():ShowUI(UINames.CharacterPanel)
 end
 
 return MenuController

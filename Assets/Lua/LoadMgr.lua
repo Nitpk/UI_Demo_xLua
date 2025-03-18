@@ -7,28 +7,27 @@
 ]]
 
 
---资源加载
-local LoadMgr = BaseClass("LoadMgr",Object)
+-- --资源加载
+-- local LoadMgr = BaseClass("LoadMgr",Object)
 
---等待时间
-LoadMgr.wait = CS.UnityEngine.WaitForSeconds(0.5)
+-- --等待时间
+-- LoadMgr.wait = CS.UnityEngine.WaitForSeconds(0.5)
 
---模拟异步加载
-function LoadMgr.LoadAsync(assetPath,assetType,callBack)
-    assert(type(assetPath)=="string" and #assetPath > 0 and assetType ~= nil)
+-- --模拟异步加载
+-- function LoadMgr.LoadAsync(assetPath,assetType,callBack)
+--     assert(type(assetPath)=="string" and #assetPath > 0 and assetType ~= nil)
 
-    print(assetPath.."加载中,模拟假设需0.5秒")
-    local asset = Resources.Load(assetPath,assetType)
+--     print(assetPath.."加载中,模拟假设需0.5秒")
+--     local asset = Resources.Load(assetPath,assetType)
 
-    coroutine.yield(LoadMgr.wait)
-    print("加载完成，执行回调")
+--     coroutine.yield(LoadMgr.wait)
+--     print("加载完成，执行回调")
 
-    if callBack ~= nil then
-        callBack(asset)
-    end
+--     if callBack ~= nil then
+--         callBack(asset)
+--     end
     
-end
+-- end
 
 
-
-return LoadMgr
+-- return LoadMgr

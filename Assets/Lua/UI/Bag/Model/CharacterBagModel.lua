@@ -12,6 +12,8 @@ function CharacterBagModel:__init()
     self.maxNum = 100
     --当前数量
     self.currentNum = 0
+    --每次增加的容量数
+    self.deltaNum = 1
     --角色背包列表(有序)
     self.characterList = {}
     --角色字典
@@ -86,6 +88,59 @@ function CharacterBagModel:AddCharacter(character)
     end
 
     self.currentNum = self.currentNum + 1
+end
+--更新高亮角色ID
+function CharacterBagModel:UpdateHighlightID(characterID)
+    if characterID == self.currentHighLightId then return end
+    
+    self.pastHighLightId = self.currentHighLightId
+    self.currentHighLightId = characterID
+end
+--得到当前高亮角色ID
+function CharacterBagModel:GetHighlightID()
+    return self.currentHighLightId
+end
+--得到上一个高亮角色ID
+function CharacterBagModel:GetHighlightID_Past()
+    return self.pastHighLightId
+end
+
+--得到当前背包的角色类型
+function CharacterBagModel:GetBagCharacterType()
+    return self.characterType
+end
+--设置背包角色类型
+function CharacterBagModel:SetBagCharacterType(characterType)
+    self.characterType = characterType
+end
+--得到当前角色数量
+function CharacterBagModel:GetCurrentCharacterNum()
+    return self.currentNum
+end
+--得到背包容量
+function CharacterBagModel:GetBagCapacity()
+    return self.maxNum
+end
+--增加背包容量
+function CharacterBagModel:AddBagCapacity()
+    self.maxNum = self.maxNum + self.deltaNum
+end
+--根据ID得到角色信息（在所有角色中找）
+function CharacterBagModel:GetCharacterInfo(characterID)
+    return self.characterDic[characterID]
+end
+--根据角色类型得到角色信息（在已上阵的角色中找）
+function CharacterBagModel:GetCharacterInfoOnTeam(characterType)
+    return self.teamList[characterType]
+end
+--得到阵容角色列表
+function CharacterBagModel:GetTeamList()
+    return self.teamList
+end
+--设置上阵角色数据
+function CharacterBagModel:SetCharacterOnTeam(characterID)
+    local characterInfo = self.characterDic[characterID]
+    self.teamList[characterInfo.type] = characterInfo
 end
 
 return CharacterBagModel

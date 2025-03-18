@@ -2,7 +2,6 @@
 作者：阳贻凡
 --]]
 
-
 --角色背包视图
 local BagView = BaseClass("BagView", ViewBase)
 BagView.Name = "BagView"
@@ -42,17 +41,49 @@ function BagView:AddListener()
             EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_BAG_CAPACITY)
         end)
     --角色类型切换
-    for i=1,6 do
-        self.typeToggles[i].onValueChanged:AddListener(
-            function(inOn)
-                for i=1,#self.typeToggles do
-                    if self.typeToggles[i].isOn then
-                        EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, i-1)
-                        break
-                    end
-                end
-            end)
-    end
+    self.typeToggles[1].onValueChanged:AddListener(
+        function(isOn)
+            if not isOn then return end
+
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, CharacterType.All)
+            
+        end)
+    self.typeToggles[2].onValueChanged:AddListener(
+        function(isOn)
+            if not isOn then return end
+
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, CharacterType.Type1)
+            
+        end)
+    self.typeToggles[3].onValueChanged:AddListener(
+        function(isOn)
+            if not isOn then return end
+
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, CharacterType.Type2)
+            
+        end)
+    self.typeToggles[4].onValueChanged:AddListener(
+        function(isOn)
+            if not isOn then return end
+
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, CharacterType.Type3)
+            
+        end)
+    self.typeToggles[5].onValueChanged:AddListener(
+        function(isOn)
+            if not isOn then return end
+
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, CharacterType.Type4)
+            
+        end)
+    self.typeToggles[6].onValueChanged:AddListener(
+        function(isOn)
+            if not isOn then return end
+
+            EventSystem.GetInstance():Trigger(EventType.CHARACTER_BAG.UPDATE_CHARACTER_TYPE, CharacterType.Type5)
+            
+        end)
+    
     --设置格子初始化操作
     self.characterViewList:SetInitViewCellBundle(
         function (cellObj)
@@ -88,21 +119,17 @@ function BagView:RemoveListener()
     self.characterViewList:SetDataCallBack(nil)
 end
 
-
-function BagView:OnShow()
-    self.typeToggles[1].isOn = true
+--高亮类型Type
+function BagView:HighlightType(characterType)
+    self.typeToggles[characterType+1].isOn = true
 end
 
 --更新背包容量UI
-function BagView:UpdateBagNum(characterBagModel)
-    if not characterBagModel then
-        return
-    end
-
+function BagView:UpdateBagNum(currentNum,maxNum)
     self.strBuilder:Clear()
-    self.strBuilder:Append(tostring(characterBagModel.currentNum))
+    self.strBuilder:Append(tostring(currentNum))
     self.strBuilder:Append(BagView.strBagNum)
-    self.strBuilder:Append(tostring(characterBagModel.maxNum))
+    self.strBuilder:Append(tostring(maxNum))
     self.bagNumText.text = self.strBuilder:ToString()
 end
 --更新背包列表UI

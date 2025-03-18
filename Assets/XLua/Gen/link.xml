@@ -4,7 +4,9 @@
 
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="Demo.CharacterViewList" preserve="all"/>
+		<type fullname="Demo.LoadMgr" preserve="all"/>
 		<type fullname="Demo.LuaUtil" preserve="all"/>
+		<type fullname="Demo.Main" preserve="all"/>
 		
 	</assembly>
 

@@ -4,14 +4,10 @@
 --UI名称
 local UIName = 
 {
-    --背包菜单
-    CharacterBagMenu = "BagMenu",
-    --角色背包列表
-    CharacterBagList = "BagList",
-    --角色展示
-    CharacterDisplay = "CharacterDisplay",
-    --阵容框
-    TeamPanel = "TeamPanel",
+    --角色菜单
+    CharacterMenu = "CharacterMenu",
+    --侠客界面
+    CharacterPanel = "CharacterPanel"
 }
 
 return UIName

@@ -25,7 +25,13 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(Demo.CharacterViewList), DemoCharacterViewListWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(Demo.LoadMgr), DemoLoadMgrWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(Demo.LuaUtil), DemoLuaUtilWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(Demo.Main), DemoMainWrap.__Register);
         
         
         

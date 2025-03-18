@@ -20,8 +20,7 @@ local config = {
         UIManager = "UIManager",
         TeamCharacterCell = "TeamCharacterCell",
         CharacterCell = "CharacterCell",
-        util = "xlua.util",
-        LoadMgr = "LoadMgr"
+        ViewNames = "ViewNames"
     },
     --C#的类
     CSharpDic = {
@@ -46,7 +45,9 @@ local config = {
         Toggle = CS.UnityEngine.UI.Toggle,
         Sprite = CS.UnityEngine.Sprite,
 
-        Events = CS.UnityEngine.Events
+        Events = CS.UnityEngine.Events,
+
+        LoadMgr = CS.Demo.LoadMgr
     }
     
 }
@@ -71,10 +72,3 @@ local mt =
 }
 
 setmetatable(_G,mt)
-
---C#的Main类
-Main = GameObject.Find("Main"):GetComponent(typeof(CS.Demo.Main)) 
---执行协程的方法
-function StartCoroutine(func,...)
-    return Main:StartCoroutine(util.cs_generator(func,...))
-end

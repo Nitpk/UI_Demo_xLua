@@ -2,7 +2,6 @@
 作者：阳贻凡
 --]]
 
-
 --阵容视图
 local TeamView = BaseClass("TeamView", ViewBase)
 TeamView.Name = "TeamView"

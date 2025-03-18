@@ -83,6 +83,28 @@ namespace XLua
 #endif
 		}
         
+		public void __Gen_Delegate_Imp3(UnityEngine.Object p0)
+		{
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnv.luaEnvLock)
+            {
+#endif
+                RealStatePtr L = luaEnv.rawL;
+                int errFunc = LuaAPI.pcall_prepare(L, errorFuncRef, luaReference);
+                ObjectTranslator translator = luaEnv.translator;
+                translator.Push(L, p0);
+                
+                PCall(L, 1, 0, errFunc);
+                
+                
+                
+                LuaAPI.lua_settop(L, errFunc - 1);
+                
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
+		}
+        
         
 		static DelegateBridge()
 		{
@@ -105,6 +127,11 @@ namespace XLua
 		    if (type == typeof(System.Func<UnityEngine.GameObject, int>))
 			{
 			    return new System.Func<UnityEngine.GameObject, int>(__Gen_Delegate_Imp2);
+			}
+		
+		    if (type == typeof(UnityEngine.Events.UnityAction<UnityEngine.Object>))
+			{
+			    return new UnityEngine.Events.UnityAction<UnityEngine.Object>(__Gen_Delegate_Imp3);
 			}
 		
 		    return null;
